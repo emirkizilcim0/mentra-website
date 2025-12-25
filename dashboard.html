@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentra | AI-Powered Psychology & Mood Tracking</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;700&family=Pacifico&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,6 +21,10 @@
             --primary-light: #8A84FF;
             --secondary: #FF6584;
             --accent: #36D1DC;
+            --accent-pink: #FF6B8B;
+            --accent-green: #06D6A0;
+            --accent-yellow: #FFD166;
+            --accent-purple: #9D4EDD;
             --dark: #2D2B55;
             --light: #F8F9FF;
             --gray: #E6E9FF;
@@ -25,6 +32,10 @@
             --card-bg: #FFFFFF;
             --header-bg: rgba(255, 255, 255, 0.95);
             --transition: all 0.3s ease;
+            --graph-grid: rgba(0, 0, 0, 0.1);
+            --graph-text: rgba(0, 0, 0, 0.6);
+            --graph-bg: rgba(0, 0, 0, 0.05);
+            --stat-card-text: var(--text);
         }
 
         .dark-mode {
@@ -32,12 +43,20 @@
             --primary-light: #6C63FF;
             --secondary: #FF8FA3;
             --accent: #5CE1E6;
+            --accent-pink: #FF8FA3;
+            --accent-green: #06D6A0;
+            --accent-yellow: #FFD166;
+            --accent-purple: #B57EDC;
             --dark: #F8F9FF;
             --light: #121212;
             --gray: #2A2A3A;
             --text: #E6E9FF;
             --card-bg: #1E1E2E;
             --header-bg: rgba(30, 30, 46, 0.95);
+            --graph-grid: rgba(255, 255, 255, 0.1);
+            --graph-text: rgba(255, 255, 255, 0.6);
+            --graph-bg: rgba(255, 255, 255, 0.08);
+            --stat-card-text: #FFFFFF;
         }
 
         body {
@@ -49,7 +68,10 @@
             transition: var(--transition);
         }
 
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
             line-height: 1.2;
@@ -88,17 +110,22 @@
         }
 
         .logo-image {
-            height: 45px;
+            height: 100px;
             width: auto;
             transition: var(--transition);
         }
 
         .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            font-weight: 400;
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-left: 12px;
             transition: var(--transition);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .nav-links {
@@ -159,7 +186,7 @@
         }
 
         .cta-button {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
             color: white;
             border: none;
             padding: 12px 28px;
@@ -217,7 +244,7 @@
             font-size: 3.5rem;
             margin-bottom: 20px;
             color: var(--dark);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -269,14 +296,21 @@
             position: relative;
             box-shadow: 0 30px 60px rgba(108, 99, 255, 0.3);
             overflow: hidden;
-            border: 15px solid var(--dark);
+            border: 8px solid var(--dark);
             transform: perspective(1000px) rotateY(-10deg);
             animation: float 6s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: perspective(1000px) rotateY(-10deg) translateY(0); }
-            50% { transform: perspective(1000px) rotateY(-10deg) translateY(-20px); }
+
+            0%,
+            100% {
+                transform: perspective(1000px) rotateY(-10deg) translateY(0);
+            }
+
+            50% {
+                transform: perspective(1000px) rotateY(-10deg) translateY(-20px);
+            }
         }
 
         .phone-screen {
@@ -284,7 +318,7 @@
             height: 100%;
             background-color: var(--card-bg);
             border-radius: 30px;
-            padding: 25px;
+            padding: 20px 15px;
             overflow: hidden;
             position: relative;
             display: flex;
@@ -295,78 +329,391 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .screen-title {
             color: var(--primary);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
+        /* Mood Graph Styles */
         .mood-visual {
-            flex: 1;
-            background: linear-gradient(45deg, var(--secondary), var(--accent), var(--primary));
-            border-radius: 20px;
-            margin: 20px 0;
+            padding: 12px;
+            border-radius: 15px;
+            background: var(--graph-bg);
+            margin-top: 10px;
+        }
+
+        .mood-graph-container {
             position: relative;
-            overflow: hidden;
-            padding: 20px;
+            height: 120px;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
         .mood-graph {
+            position: relative;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            background: var(--graph-bg);
+            border-radius: 8px;
+            padding: 15px 20px;
+            overflow: visible;
+        }
+
+        .mood-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .grid-line {
+            width: 1px;
+            height: 100%;
+            background: var(--graph-grid);
             position: relative;
         }
 
-        .mood-line {
+        .grid-line:before {
+            content: '';
             position: absolute;
-            width: 90%;
-            height: 3px;
-            background-color: var(--dark);
-            top: 50%;
-            left: 5%;
-            border-radius: 3px;
-            opacity: 0.3;
+            left: -15px;
+            top: 100%;
+            color: var(--graph-text);
+            font-size: 10px;
+            transform: translateY(-100%);
+        }
+
+        .grid-line:nth-child(1):before {
+            content: 'Mon';
+        }
+
+        .grid-line:nth-child(2):before {
+            content: 'Tue';
+        }
+
+        .grid-line:nth-child(3):before {
+            content: 'Wed';
+        }
+
+        .grid-line:nth-child(4):before {
+            content: 'Thu';
+        }
+
+        .grid-line:nth-child(5):before {
+            content: 'Fri';
+        }
+
+        .grid-line:nth-child(6):before {
+            content: 'Sat';
+        }
+
+        .grid-line:nth-child(7):before {
+            content: 'Sun';
+        }
+
+        .mood-axis {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--graph-grid);
+        }
+
+        .axis-label {
+            position: absolute;
+            color: var(--graph-text);
+            font-size: 9px;
+            font-weight: 600;
+            left: 5px;
+            transform: translateY(-100%);
+        }
+
+        .mood-line-path {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            z-index: 2;
         }
 
         .mood-dot {
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background: white;
+            border: 2px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+            transform: translate(-50%, -50%);
         }
 
-        .dot-1 { left: 15%; background-color: var(--secondary); }
-        .dot-2 { left: 35%; background-color: var(--accent); }
-        .dot-3 { left: 55%; background-color: var(--primary); }
-        .dot-4 { left: 75%; background-color: #FFB347; }
-        .dot-5 { left: 90%; background-color: #36D1DC; }
+        .mood-dot:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+        }
 
-        .insight-box {
-            background: var(--light);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
+        .mood-dot.active {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .mood-legend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            color: var(--text);
+            font-size: 11px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .legend-stress {
+            background: #FF6B6B;
+        }
+
+        .legend-neutral {
+            background: #FFD166;
+        }
+
+        .legend-calm {
+            background: #06D6A0;
+        }
+
+        .mood-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: var(--graph-bg);
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--stat-card-text) !important;
+        }
+
+        .stat-label {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 9px;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        .mood-very-happy {
+            background: #06D6A0;
+        }
+
+        .mood-happy {
+            background: #83E8BA;
+        }
+
+        .mood-neutral {
+            background: #FFD166;
+        }
+
+        .mood-sad {
+            background: #FF9B71;
+        }
+
+        .mood-very-sad {
+            background: #FF6B6B;
+        }
+
+        @keyframes drawLine {
+            from {
+                stroke-dashoffset: 1000;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .line-animated {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease-out forwards;
+        }
+
+        .trend-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+
+        .trend-up {
+            color: #06D6A0;
+        }
+
+        .trend-down {
+            color: #FF6B6B;
+        }
+
+        .trend-stable {
+            color: #FFD166;
+        }
+
+        .trend-indicator i {
+            margin-right: 4px;
         }
 
         .insight-box h4 {
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
 
         .insight-box p {
-            font-size: 0.8rem;
-            color: var(--text);
-            margin: 0;
+            font-size: 0.9rem;
             opacity: 0.8;
+        }
+
+        /* Takvim Görünümü - İlk görsele göre düzenlendi */
+        .calendar-screen {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .calendar-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--graph-grid);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .calendar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .calendar-month {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .calendar-table th {
+            padding: 8px 2px;
+            color: var(--text);
+            opacity: 0.6;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.7rem;
+        }
+
+        .calendar-table td {
+            padding: 8px 2px;
+            text-align: center;
+            color: var(--text);
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.75rem;
+        }
+
+        .calendar-table td.today {
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-table td.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-table td:hover {
+            background: rgba(108, 99, 255, 0.1);
+        }
+
+        /* Motivation Card */
+        .motivation-card {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(255, 107, 139, 0.1));
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .motivation-title {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .motivation-text {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text);
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .motivation-author {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-align: right;
         }
 
         /* Features Section */
@@ -420,7 +767,7 @@
         .feature-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -464,7 +811,7 @@
             left: 10%;
             width: 80%;
             height: 3px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            background: linear-gradient(to right, var(--primary), var(--accent-pink));
             z-index: 0;
         }
 
@@ -481,7 +828,7 @@
         .step-number {
             width: 70px;
             height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
             color: white;
             border-radius: 50%;
             display: flex;
@@ -531,7 +878,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
             margin: 0 auto 30px;
             display: flex;
             align-items: center;
@@ -564,7 +911,7 @@
         /* CTA Section */
         .cta-section {
             padding: 120px 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-pink) 100%);
             color: white;
             text-align: center;
             position: relative;
@@ -578,7 +925,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
         }
 
         .cta-section h2 {
@@ -689,7 +1036,7 @@
             left: 0;
             width: 40px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            background: linear-gradient(to right, var(--primary), var(--accent-pink));
         }
 
         .footer-links {
@@ -765,20 +1112,20 @@
                 text-align: center;
                 padding-top: 140px;
             }
-            
+
             .hero-content {
                 padding-right: 0;
                 margin-bottom: 80px;
             }
-            
+
             .hero-buttons {
                 justify-content: center;
             }
-            
+
             .phone-mockup {
                 transform: perspective(1000px) rotateY(0);
             }
-            
+
             .steps-container::before {
                 display: none;
             }
@@ -788,7 +1135,7 @@
             .nav-links {
                 display: none;
             }
-            
+
             .mobile-menu-btn {
                 display: block;
                 background: none;
@@ -797,20 +1144,20 @@
                 color: var(--text);
                 cursor: pointer;
             }
-            
+
             .hero h1 {
                 font-size: 2.8rem;
             }
-            
+
             .section-title h2 {
                 font-size: 2.3rem;
             }
-            
+
             .phone-mockup {
                 width: 280px;
                 height: 540px;
             }
-            
+
             .cta-section h2 {
                 font-size: 2.5rem;
             }
@@ -820,21 +1167,21 @@
             .hero h1 {
                 font-size: 2.2rem;
             }
-            
+
             .hero p {
                 font-size: 1.1rem;
             }
-            
+
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .app-stores {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .app-store-btn {
                 width: 100%;
                 max-width: 250px;
@@ -921,21 +1268,298 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Ortak Ekran Bileşenleri */
+        .screen-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .mentra-logo {
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Slide 1: Günlük Listesi (WhatsApp görüntüsüne göre) */
+        .write-diary-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.2);
+        }
+
+        .diary-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--graph-grid);
+            transition: var(--transition);
+        }
+
+        .diary-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .diary-info h6 {
+            font-size: 0.7rem;
+            color: var(--text);
+            opacity: 0.6;
+            margin-bottom: 2px;
+        }
+
+        .diary-info p {
+            font-size: 0.75rem;
+            color: var(--text);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .advice-btn {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent));
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .advice-btn.blue {
+            background: linear-gradient(135deg, #3498db, var(--primary));
+        }
+
+        /* Slide 2: Takvim ve Motivasyon (PNG görüntüsüne göre) */
+        .calendar-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            border: 1px solid var(--graph-grid);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+
+        .day-name {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: var(--text);
+            opacity: 0.5;
+        }
+
+        .day-num {
+            font-size: 0.7rem;
+            padding: 5px;
+            color: var(--text);
+        }
+
+        .day-num.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .motivation-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid var(--graph-grid);
+        }
+
+        .motivation-card h6 {
+            color: var(--text);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .motivation-text {
+            font-size: 0.75rem;
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        /* Alt Navigasyon Barı (Tüm ekranlarda sabit) */
+        .app-bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid var(--graph-grid);
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+            color: var(--text);
+            opacity: 0.6;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-icon:hover,
+        .nav-icon.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* App Slides */
+        .app-slide {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            padding-bottom: 70px;
+            /* Bottom nav için yer bırak */
+            overflow-y: auto;
+        }
+
+        .app-slide.active {
+            display: flex;
+        }
+
+        /* Home Page */
+        .home-page {
+            padding: 15px;
+        }
+
+        /* Advice Page */
+        .advice-page {
+            padding: 15px;
+        }
+
+        .advice-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--graph-grid);
+        }
+
+        .advice-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .advice-card p {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        /* Mood Page */
+        .mood-page {
+            padding: 15px;
+        }
+
+        /* Mood dots color coding */
+        .mood-dot.very-happy {
+            background: #06D6A0;
+            border-color: #06D6A0;
+        }
+
+        .mood-dot.happy {
+            background: #83E8BA;
+            border-color: #83E8BA;
+        }
+
+        .mood-dot.neutral {
+            background: #FFD166;
+            border-color: #FFD166;
+        }
+
+        .mood-dot.sad {
+            background: #FF9B71;
+            border-color: #FF9B71;
+        }
+
+        .mood-dot.very-sad {
+            background: #FF6B6B;
+            border-color: #FF6B6B;
+        }
+
+        /* App Screen Animation */
+        .app-slide {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
+
 <body>
-    <!-- Header & Navigation -->
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
                 <img src="logo.png" alt="Mentra Logo" class="logo-image">
                 <span class="logo-text">Mentra</span>
             </a>
-            
+
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
-            
+
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
@@ -951,7 +1575,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation -->
     <div class="mobile-nav" id="mobileNav">
         <button class="mobile-nav-close" id="mobileNavClose">
             <i class="fas fa-times"></i>
@@ -966,12 +1589,13 @@
         </ul>
     </div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container" style="display: flex; align-items: center;">
             <div class="hero-content">
                 <h1 class="fade-in">Your Personal <span>Psychological</span> Companion</h1>
-                <p class="fade-in">Mentra combines AI psychology with mood tracking to provide personalized advice based on your personality type, zodiac sign, and emotional patterns. Write diaries, gain insights, and visualize your emotional journey.</p>
+                <p class="fade-in">Mentra is more than a diary — it’s a mirror for your mind. Track your mood, write
+                    your thoughts, and get personalized AI guidance tailored to your personality and zodiac sign — all
+                    in one intelligent emotional companion.</p>
                 <div class="hero-buttons fade-in">
                     <button class="cta-button">Start Your Journey <i class="fas fa-heart"></i></button>
                     <button class="secondary-button">Learn More</button>
@@ -979,37 +1603,266 @@
             </div>
             <div class="hero-image">
                 <div class="phone-mockup fade-in">
-                    <div class="phone-screen">
-                        <div class="screen-header">
-                            <div class="screen-title">Mood Tracker</div>
-                            <div style="color: var(--primary); font-size: 0.9rem;">October 2023</div>
-                        </div>
-                        <div class="mood-visual">
-                            <div class="mood-graph">
-                                <div class="mood-line"></div>
-                                <div class="mood-dot dot-1"></div>
-                                <div class="mood-dot dot-2"></div>
-                                <div class="mood-dot dot-3"></div>
-                                <div class="mood-dot dot-4"></div>
-                                <div class="mood-dot dot-5"></div>
+                    <div class="phone-screen" id="phoneSlider">
+                        <!-- Advice Page (Calendar & Motivation) - İLK SAYFA -->
+                        <div class="app-slide advice-page active" id="advicePage">
+                            <div class="screen-nav">
+                                <div class="mentra-logo">Mentra</div>
+                                <i class="far fa-comment-dots" style="color: var(--text); opacity: 0.7;"></i>
+                            </div>
+
+                            <!-- Takvim - İlk görsele göre büyütülmüş versiyon -->
+                            <div class="calendar-container">
+                                <div class="calendar-header">
+                                    <i class="fas fa-chevron-left"
+                                        style="font-size: 0.8rem; color: var(--text); cursor: pointer;"></i>
+                                    <div>
+                                        <div class="calendar-title">December 2025</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right"
+                                        style="font-size: 0.8rem; color: var(--text); cursor: pointer;"></i>
+                                </div>
+
+                                <table class="calendar-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SUN</th>
+                                            <th>MON</th>
+                                            <th>TUE</th>
+                                            <th>WED</th>
+                                            <th>THU</th>
+                                            <th>FRI</th>
+                                            <th>SAT</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="other-month">30</td>
+                                            <td>1</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                            <td>5</td>
+                                            <td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>8</td>
+                                            <td>9</td>
+                                            <td>10</td>
+                                            <td>11</td>
+                                            <td>12</td>
+                                            <td>13</td>
+                                        </tr>
+                                        <tr>
+                                            <td>14</td>
+                                            <td>15</td>
+                                            <td>16</td>
+                                            <td>17</td>
+                                            <td>18</td>
+                                            <td>19</td>
+                                            <td>20</td>
+                                        </tr>
+                                        <tr>
+                                            <td>21</td>
+                                            <td>22</td>
+                                            <td>23</td>
+                                            <td class="today">24</td>
+                                            <td>25</td>
+                                            <td>26</td>
+                                            <td>27</td>
+                                        </tr>
+                                        <tr>
+                                            <td>28</td>
+                                            <td>29</td>
+                                            <td>30</td>
+                                            <td>31</td>
+                                            <td class="other-month">1</td>
+                                            <td class="other-month">2</td>
+                                            <td class="other-month">3</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Motivasyon Kartı -->
+                            <div class="motivation-card">
+                                <div class="motivation-title">
+                                    <i class="fas fa-sparkles" style="color: var(--primary);"></i> Daily Motivation
+                                </div>
+                                <div class="motivation-text">
+                                    "My anxiety doesn't come from thinking about the future but from wanting to control
+                                    it."
+                                </div>
+                                <div class="motivation-author">~ Hugh Prather</div>
+                            </div>
+
+                            <!-- Today's Insight Kartı (ENFJ kartı kaldırıldı, bununla değiştirildi) -->
+                            <div class="insight-box"
+                                style="margin-top: 15px; padding: 12px; background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(255, 107, 139, 0.1)); border-radius: 12px; border: 1px solid rgba(108, 99, 255, 0.2);">
+                                <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 8px;">
+                                    <i class="fas fa-lightbulb" style="color: var(--accent-yellow);"></i> Today's
+                                    Insight
+                                </h4>
+                                <p style="font-size: 0.75rem; line-height: 1.5; color: var(--text);">
+                                    Your mood has improved 12% this week! Keep up the positive momentum with regular
+                                    journaling.
+                                </p>
                             </div>
                         </div>
-                        <div class="insight-box">
-                            <h4>Today's Insight</h4>
-                            <p>Based on your ENFJ personality and Libra sign, today is perfect for creative expression and social connections.</p>
+
+                        <!-- Home Page (Diary List) - İKİNCİ SAYFA -->
+                        <div class="app-slide home-page" id="homePage">
+                            <div class="screen-nav">
+                                <div class="mentra-logo">Mentra</div>
+                                <i class="fas fa-sync-alt" style="font-size: 0.9rem; opacity: 0.5;"></i>
+                            </div>
+
+                            <button class="write-diary-btn">
+                                <i class="fas fa-pencil-alt"></i> Write diary
+                            </button>
+
+                            <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; color: var(--text);">
+                                Your previous diaries</div>
+
+                            <div class="diary-item">
+                                <div class="diary-info">
+                                    <h6>24 December, 2025</h6>
+                                    <p>I'm very stressed now...</p>
+                                </div>
+                                <button class="advice-btn">
+                                    <i class="far fa-eye"></i> See Advice
+                                </button>
+                            </div>
+
+                            <div class="diary-item">
+                                <div class="diary-info">
+                                    <h6>23 December, 2025</h6>
+                                    <p>Today was productive and calm</p>
+                                </div>
+                                <button class="advice-btn blue">
+                                    <i class="fas fa-sparkles"></i> Get Advice
+                                </button>
+                            </div>
+
+                            <div class="diary-item">
+                                <div class="diary-info">
+                                    <h6>22 December, 2025</h6>
+                                    <p>Feeling anxious about the future</p>
+                                </div>
+                                <button class="advice-btn">
+                                    <i class="far fa-eye"></i> See Advice
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mood Page (Graph) - ÜÇÜNCÜ SAYFA -->
+                        <div class="app-slide mood-page" id="moodPage">
+                            <div class="screen-header">
+                                <div class="screen-title">Mood Tracker</div>
+                                <div style="color: var(--primary); font-size: 0.9rem;">December 2025</div>
+                            </div>
+
+                            <div class="mood-visual">
+                                <div class="mood-graph-container">
+                                    <div class="mood-graph" id="mood-graph-wrapper">
+                                        <div class="mood-grid">
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                            <div class="grid-line"></div>
+                                        </div>
+                                        <div class="mood-axis" style="top: 15%;">
+                                            <div class="axis-label">High</div>
+                                        </div>
+                                        <div class="mood-axis" style="top: 50%;">
+                                            <div class="axis-label">Medium</div>
+                                        </div>
+                                        <div class="mood-axis" style="top: 85%;">
+                                            <div class="axis-label">Low</div>
+                                        </div>
+                                        <svg class="mood-line-path">
+                                            <defs>
+                                                <linearGradient id="mood-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                    <stop offset="0%" stop-color="#06D6A0" />
+                                                    <stop offset="50%" stop-color="#FFD166" />
+                                                    <stop offset="100%" stop-color="#FF6B6B" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path id="mood-path" d="" stroke="url(#mood-gradient)"
+                                                class="line-animated"></path>
+                                        </svg>
+                                        <div class="mood-dot very-happy dot-1" data-mood="Very Happy"
+                                            style="left: 7.5%; top: 15%;"></div>
+                                        <div class="mood-dot happy dot-2" data-mood="Happy"
+                                            style="left: 21%; top: 30%;"></div>
+                                        <div class="mood-dot neutral dot-3" data-mood="Neutral"
+                                            style="left: 34.5%; top: 50%;"></div>
+                                        <div class="mood-dot sad dot-4" data-mood="Sad" style="left: 48%; top: 70%;">
+                                        </div>
+                                        <div class="mood-dot very-sad dot-5" data-mood="Very Sad"
+                                            style="left: 61.5%; top: 85%;"></div>
+                                        <div class="mood-dot neutral dot-6" data-mood="Neutral"
+                                            style="left: 75%; top: 50%;"></div>
+                                        <div class="mood-dot happy dot-7" data-mood="Happy"
+                                            style="left: 88.5%; top: 30%;"></div>
+                                    </div>
+                                </div>
+                                <div class="mood-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color legend-stress"></div><span>Stress</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color legend-neutral"></div><span>Neutral</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color legend-calm"></div><span>Calm</span>
+                                    </div>
+                                </div>
+                                <div class="mood-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value">4.2</div>
+                                        <div class="stat-label">Avg Mood</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">+12%</div>
+                                        <div class="stat-label">Weekly</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">7 days</div>
+                                        <div class="stat-label">Streak</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="insight-box"
+                                style="margin-top: 15px; padding: 10px; background: var(--graph-bg); border-radius: 10px;">
+                                <h4>Weekly Summary</h4>
+                                <p style="font-size: 0.7rem;">Your mood shows positive trends this week. The most stable
+                                    days were Wednesday and Friday.</p>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Navigation -->
+                        <div class="app-bottom-nav" id="bottomNav">
+                            <i class="nav-icon fas fa-home" data-page="advicePage"></i>
+                            <i class="nav-icon far fa-lightbulb" data-page="homePage"></i>
+                            <i class="nav-icon far fa-smile" data-page="moodPage"></i>
+                            <i class="nav-icon far fa-user" data-page="profilePage"></i>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
             <div class="section-title">
                 <h2 class="fade-in">Powerful Features for Mental Wellness</h2>
-                <p class="fade-in">Mentra combines psychology, astrology, and AI to give you personalized insights into your emotional world.</p>
+                <p class="fade-in">Mentra combines psychology, astrology, and AI to give you personalized insights into
+                    your emotional world.</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card fade-in">
@@ -1017,34 +1870,37 @@
                         <i class="fas fa-book-open"></i>
                     </div>
                     <h3>AI-Powered Diary</h3>
-                    <p>Write daily entries and receive intelligent insights based on sentiment analysis and psychological patterns. Our AI understands context and provides meaningful feedback.</p>
+                    <p>Write daily entries and receive intelligent insights based on sentiment analysis and
+                        psychological patterns. Our AI understands context and provides meaningful feedback.</p>
                 </div>
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
                         <i class="fas fa-user-astronaut"></i>
                     </div>
                     <h3>Personality & Sign Analysis</h3>
-                    <p>Get advice tailored to your Myers-Briggs personality type and zodiac sign for hyper-personalized guidance that evolves with your emotional journey.</p>
+                    <p>Get advice tailored to your Myers-Briggs personality type and zodiac sign for hyper-personalized
+                        guidance that evolves with your emotional journey.</p>
                 </div>
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Mood Visualization</h3>
-                    <p>Track your emotional patterns with beautiful graphs and see your progress over days, weeks, and months. Identify triggers and celebrate improvements.</p>
+                    <p>Track your emotional patterns with beautiful graphs and see your progress over days, weeks, and
+                        months. Identify triggers and celebrate improvements.</p>
                 </div>
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
                         <i class="fas fa-lightbulb"></i>
                     </div>
                     <h3>Intelligent Advice</h3>
-                    <p>Receive actionable psychological advice based on your current mood, personality, and life circumstances. Evidence-based strategies for mental wellbeing.</p>
+                    <p>Receive actionable psychological advice based on your current mood, personality, and life
+                        circumstances. Evidence-based strategies for mental wellbeing.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
     <section id="how-it-works" class="how-it-works">
         <div class="container">
             <div class="section-title">
@@ -1055,23 +1911,25 @@
                 <div class="step fade-in">
                     <div class="step-number">1</div>
                     <h3>Create Your Profile</h3>
-                    <p>Set up your psychological profile with personality type and zodiac sign for personalized insights that grow with you.</p>
+                    <p>Set up your psychological profile with personality type and zodiac sign for personalized insights
+                        that grow with you.</p>
                 </div>
                 <div class="step fade-in">
                     <div class="step-number">2</div>
                     <h3>Write & Reflect</h3>
-                    <p>Journal your thoughts daily. Our AI analyzes your writing to detect mood patterns, emotional states, and growth opportunities.</p>
+                    <p>Journal your thoughts daily. Our AI analyzes your writing to detect mood patterns, emotional
+                        states, and growth opportunities.</p>
                 </div>
                 <div class="step fade-in">
                     <div class="step-number">3</div>
                     <h3>Get Insights & Track Progress</h3>
-                    <p>Receive personalized advice and visualize your emotional journey with interactive mood charts and progress reports.</p>
+                    <p>Receive personalized advice and visualize your emotional journey with interactive mood charts and
+                        progress reports.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
     <section id="testimonials" class="testimonials">
         <div class="container">
             <div class="section-title">
@@ -1083,7 +1941,9 @@
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
                     </div>
-                    <p>"Mentra helped me understand my emotional patterns in ways I never could before. The personality-based advice is surprisingly accurate and has genuinely improved my self-awareness and relationships."</p>
+                    <p>"Mentra helped me understand my emotional patterns in ways I never could before. The
+                        personality-based advice is surprisingly accurate and has genuinely improved my self-awareness
+                        and relationships."</p>
                     <div class="user-name">Sarah Johnson</div>
                     <div class="user-traits">ENFP • Libra • User for 8 months</div>
                 </div>
@@ -1091,12 +1951,12 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section id="download" class="cta-section">
         <div class="container">
             <h2 class="fade-in">Start Your Journey to Self-Discovery</h2>
-            <p class="fade-in">Download Mentra today and begin tracking your mood, writing with purpose, and receiving personalized psychological guidance based on who you truly are.</p>
-            <button class="cta-button light fade-in">Download Now <i class="fas fa-download"></i></button>
+            <p class="fade-in">Download Mentra today and begin tracking your mood, writing with purpose, and receiving
+                personalized psychological guidance based on who you truly are.</p>
+            <button class="cta-button light fade-in">Download Soon <i class="fas fa-download"></i></button>
             <div class="app-stores fade-in">
                 <a href="#" class="app-store-btn">
                     <i class="fab fa-apple"></i>
@@ -1116,16 +1976,16 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column footer-about">
                     <a href="#" class="logo">
-                        <img src="https://via.placeholder.com/160x45/6C63FF/ffffff?text=Mentra" alt="Mentra Logo" class="logo-image">
+                        <img src="logo.png" alt="Mentra Logo" class="logo-image">
                         <span class="logo-text">Mentra</span>
                     </a>
-                    <p>Your AI-powered psychological companion for mood tracking, diary writing, and personalized advice based on personality and astrology.</p>
+                    <p>Your AI-powered psychological companion for mood tracking, diary writing, and personalized advice
+                        based on personality and astrology.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -1165,7 +2025,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 Mentra. All rights reserved. This is a promotional website for a concept application.</p>
+                <p>&copy; 2025 Mentra. All rights reserved. This is a promotional website for a concept application.</p>
             </div>
         </div>
     </footer>
@@ -1176,7 +2036,7 @@
         const mobileThemeToggle = document.getElementById('mobileThemeToggle');
         const body = document.body;
 
-        // Check for saved theme or prefer-color-scheme
+        // Check for saved theme
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -1222,21 +2082,18 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close mobile menu when clicking on a link
         document.querySelectorAll('.mobile-nav-links a').forEach(link => {
             link.addEventListener('click', closeMobileMenu);
         });
 
-        // Smooth scrolling for navigation links
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
+                if (targetId === '#') return;
                 const targetElement = document.querySelector(targetId);
-                if(targetElement) {
+                if (targetElement) {
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
@@ -1247,90 +2104,187 @@
 
         // Scroll animations
         const fadeElements = document.querySelectorAll('.fade-in');
-
         function checkScroll() {
             fadeElements.forEach(element => {
                 const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
+                if (elementTop < window.innerHeight - 100) {
                     element.classList.add('visible');
                 }
             });
         }
-
-        // Check on load and scroll
         window.addEventListener('load', checkScroll);
         window.addEventListener('scroll', checkScroll);
 
         // Button interactions
         document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
                     this.style.transform = '';
-                    alert('Thank you for your interest in Mentra! This is a concept demonstration. In a real implementation, this would redirect to the app store.');
+                    alert('Thank you for your interest in Mentra! This is a concept demonstration.');
                 }, 200);
             });
         });
 
-        // Simple testimonial rotation
-        const testimonials = [
-            {
-                text: "Mentra helped me understand my emotional patterns in ways I never could before. The personality-based advice is surprisingly accurate and has genuinely improved my self-awareness and relationships.",
-                name: "Sarah Johnson",
-                traits: "ENFP • Libra • User for 8 months"
-            },
-            {
-                text: "As an INTJ, I was skeptical about astrology-based advice, but the combination with psychology actually makes sense. The mood tracking visualization has been a game-changer for my self-understanding.",
-                name: "James Chen",
-                traits: "INTJ • Capricorn • User for 5 months"
-            },
-            {
-                text: "The combination of astrology and psychology sounded gimmicky at first, but the insights I've gained have been genuinely valuable to my daily life. I've learned so much about my emotional triggers.",
-                name: "Priya Patel",
-                traits: "INFJ • Leo • User for 1 year"
-            }
-        ];
-        
-        let currentTestimonial = 0;
-        const testimonialElement = document.querySelector('.testimonial p');
-        const userNameElement = document.querySelector('.user-name');
-        const userTraitsElement = document.querySelector('.user-traits');
-        
-        // Rotate testimonials every 8 seconds
-        setInterval(() => {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            
-            // Fade out
-            testimonialElement.style.opacity = '0';
-            userNameElement.style.opacity = '0';
-            userTraitsElement.style.opacity = '0';
-            
-            setTimeout(() => {
-                // Update content
-                testimonialElement.textContent = testimonials[currentTestimonial].text;
-                userNameElement.textContent = testimonials[currentTestimonial].name;
-                userTraitsElement.textContent = testimonials[currentTestimonial].traits;
-                
-                // Fade in
-                testimonialElement.style.opacity = '1';
-                userNameElement.style.opacity = '1';
-                userTraitsElement.style.opacity = '1';
-            }, 500);
-        }, 8000);
+        // App Navigation - Bottom bar sadece gösterge amaçlı, sayfaları değiştirmiyor
+        const navIcons = document.querySelectorAll('.nav-icon');
+        const slides = document.querySelectorAll('.app-slide');
 
-        // Add some interactive elements to the mood graph
-        const moodDots = document.querySelectorAll('.mood-dot');
-        moodDots.forEach(dot => {
-            dot.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-50%) scale(1.3)';
+        // Başlangıçta bottom bar ikonlarını aktif duruma getir
+        navIcons[0].classList.add('active');
+
+        // Auto-slide rotation - Her 5 saniyede bir
+        let currentSlide = 0;
+        const totalSlides = 3;
+        const slideIds = ['advicePage', 'homePage', 'moodPage'];
+
+        function rotateSlides() {
+            // Önceki slaytı kapat
+            slides.forEach(slide => slide.classList.remove('active'));
+
+            // Bottom bar ikonlarını güncelle
+            navIcons.forEach((icon, index) => {
+                if (index === currentSlide) {
+                    icon.classList.add('active');
+                } else {
+                    icon.classList.remove('active');
+                }
             });
-            
-            dot.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(-50%) scale(1)';
+
+            // Yeni slaytı göster
+            const nextSlide = document.getElementById(slideIds[currentSlide]);
+            nextSlide.classList.add('active');
+
+            // Eğer mood page ise grafiği güncelle
+            if (slideIds[currentSlide] === 'moodPage') {
+                setTimeout(updateMoodLine, 100);
+            }
+
+            // Sıradaki slayt için sayaç
+            currentSlide = (currentSlide + 1) % totalSlides;
+        }
+
+        // Mood Graph Logic
+        function initMoodGraph() {
+            const dots = document.querySelectorAll('.mood-dot');
+            const moodPath = document.getElementById('mood-path');
+            const container = document.getElementById('mood-graph-wrapper');
+
+            function updateMoodLine() {
+                const rect = container.getBoundingClientRect();
+                const dotPositions = Array.from(dots).map(dot => {
+                    const left = (parseFloat(dot.style.left) / 100) * rect.width;
+                    const top = (parseFloat(dot.style.top) / 100) * rect.height;
+                    return { x: left, y: top };
+                });
+
+                if (dotPositions.length === 0) return;
+
+                let pathData = `M ${dotPositions[0].x} ${dotPositions[0].y} `;
+                for (let i = 1; i < dotPositions.length; i++) {
+                    const prev = dotPositions[i - 1];
+                    const curr = dotPositions[i];
+                    const cp1x = prev.x + (curr.x - prev.x) / 2;
+                    pathData += `C ${cp1x} ${prev.y}, ${cp1x} ${curr.y}, ${curr.x} ${curr.y} `;
+                }
+
+                moodPath.setAttribute('d', pathData);
+
+                // Reset animation
+                moodPath.classList.remove('line-animated');
+                void moodPath.offsetWidth; // Trigger reflow
+                moodPath.classList.add('line-animated');
+            }
+
+            // Set colors and active state
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function () {
+                    dots.forEach(d => d.classList.remove('active'));
+                    this.classList.add('active');
+                    showMoodDetails(this);
+                });
             });
+
+            function showMoodDetails(dot) {
+                const mood = dot.getAttribute('data-mood');
+                let tooltip = document.querySelector('.mood-detail-tooltip');
+                if (!tooltip) {
+                    tooltip = document.createElement('div');
+                    tooltip.className = 'mood-detail-tooltip';
+                    document.querySelector('.mood-visual').appendChild(tooltip);
+                }
+                tooltip.innerHTML = `<strong>${mood}</strong><p>Click for more details</p>`;
+                tooltip.style.display = 'block';
+                const dotRect = dot.getBoundingClientRect();
+                const visualRect = document.querySelector('.mood-visual').getBoundingClientRect();
+                tooltip.style.left = (dotRect.left - visualRect.left) + 'px';
+                tooltip.style.top = (dotRect.top - visualRect.top - 40) + 'px';
+                setTimeout(() => tooltip.style.display = 'none', 3000);
+            }
+
+            // Init and Handle Resize
+            setTimeout(updateMoodLine, 100);
+            window.addEventListener('resize', updateMoodLine);
+        }
+
+        // Tooltip Style
+        const tooltipStyle = document.createElement('style');
+        tooltipStyle.textContent = `
+            .mood-detail-tooltip {
+                position: absolute;
+                background: rgba(0,0,0,0.8);
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 10px;
+                z-index: 100;
+                pointer-events: none;
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
+        `;
+        document.head.appendChild(tooltipStyle);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initMoodGraph();
+            // Start auto-rotation - 5 saniyede bir
+            setInterval(rotateSlides, 5000);
         });
+
+        // Update mood line function (needs to be accessible globally)
+        window.updateMoodLine = function () {
+            const dots = document.querySelectorAll('.mood-dot');
+            const moodPath = document.getElementById('mood-path');
+            const container = document.getElementById('mood-graph-wrapper');
+
+            if (!dots.length || !moodPath || !container) return;
+
+            const rect = container.getBoundingClientRect();
+            const dotPositions = Array.from(dots).map(dot => {
+                const left = (parseFloat(dot.style.left) / 100) * rect.width;
+                const top = (parseFloat(dot.style.top) / 100) * rect.height;
+                return { x: left, y: top };
+            });
+
+            if (dotPositions.length === 0) return;
+
+            let pathData = `M ${dotPositions[0].x} ${dotPositions[0].y} `;
+            for (let i = 1; i < dotPositions.length; i++) {
+                const prev = dotPositions[i - 1];
+                const curr = dotPositions[i];
+                const cp1x = prev.x + (curr.x - prev.x) / 2;
+                pathData += `C ${cp1x} ${prev.y}, ${cp1x} ${curr.y}, ${curr.x} ${curr.y} `;
+            }
+
+            moodPath.setAttribute('d', pathData);
+
+            // Reset animation
+            moodPath.classList.remove('line-animated');
+            void moodPath.offsetWidth;
+            moodPath.classList.add('line-animated');
+        };
     </script>
 </body>
+
 </html>
